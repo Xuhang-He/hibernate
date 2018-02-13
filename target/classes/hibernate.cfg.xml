@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC 
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password">123</property> 
+		<property name="connection.url">jdbc:mysql://localhost:3306/infor_manage_sys</property>
+        <property name="show_sql">true</property>
+        
+		<mapping class="com.demo.hibernate.beans.Address" />
+		<mapping class="com.demo.hibernate.beans.Meeting" />
+		<mapping class="com.demo.hibernate.beans.Notice" />
+		<mapping class="com.demo.hibernate.beans.Schedule" />
+		<mapping class="com.demo.hibernate.beans.Sms" />
+		<mapping class="com.demo.hibernate.beans.User" />
+		<mapping class="com.demo.hibernate.beans.Worklog" />
+
+	</session-factory>
+</hibernate-configuration>
