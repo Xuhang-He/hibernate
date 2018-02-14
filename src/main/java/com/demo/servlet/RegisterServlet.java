@@ -1,5 +1,10 @@
 package com.demo.servlet;
 
+import com.demo.hibernate.beans.User;
+import com.demo.hibernate.dao.UserDao;
+import com.demo.hibernate.dao.UserDaoImpl;
+import com.demo.hibernate.service.UserService;
+import com.demo.hibernate.service.UserServiceImpl;
 import com.demo.javabean.UserBean;
 
 import javax.servlet.ServletException;
@@ -19,11 +24,17 @@ public class RegisterServlet extends HttpServlet{
         String password1 = req.getParameter("password1");
         String email = req.getParameter("email");
 
-        UserBean userBean = new UserBean();
-        boolean isExist = userBean.isExist(username);
+        //UserBean userBean = new UserBean();
+        UserDao userDao = new UserDaoImpl();
+        UserService userService = new UserServiceImpl(userDao);
+        boolean isExist = userService.isExist(username);
 
         if (!isExist) {
-            userBean.add(username, password1, email);
+            User record = new User();
+            record.setUsername(username);
+            record.setEmail(email);
+            record.setPassword(password1);
+            userService.register(record);
             session.setAttribute("username", username);
             resp.sendRedirect("welcome.jsp");
         } else {

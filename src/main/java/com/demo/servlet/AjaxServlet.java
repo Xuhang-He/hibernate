@@ -1,5 +1,9 @@
 package com.demo.servlet;
 
+import com.demo.hibernate.dao.UserDao;
+import com.demo.hibernate.dao.UserDaoImpl;
+import com.demo.hibernate.service.UserService;
+import com.demo.hibernate.service.UserServiceImpl;
 import com.demo.javabean.UserBean;
 
 import javax.servlet.ServletException;
@@ -16,9 +20,10 @@ public class AjaxServlet extends HttpServlet {
         response.setContentType("text/xml");
         response.setHeader("Cache-Control","no-cache");
         String username = request.getParameter("username");
-
-        UserBean userBean = new UserBean();
-        boolean isExist = userBean.isExist(username);
+        
+        UserDao userDao = new UserDaoImpl();
+        UserService userService = new UserServiceImpl(userDao);
+        boolean isExist = userService.isExist(username);
 
         PrintWriter out =response.getWriter();
 

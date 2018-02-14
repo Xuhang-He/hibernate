@@ -1,5 +1,9 @@
 package com.demo.servlet;
 
+import com.demo.hibernate.dao.UserDao;
+import com.demo.hibernate.dao.UserDaoImpl;
+import com.demo.hibernate.service.UserService;
+import com.demo.hibernate.service.UserServiceImpl;
 import com.demo.javabean.UserBean;
 
 import javax.servlet.ServletException;
@@ -19,8 +23,9 @@ public class LoginServlet extends HttpServlet{
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        UserBean userBean = new UserBean();
-        boolean isValid = userBean.valid(username, password);
+        UserDao userDao = new UserDaoImpl();
+        UserService userService = new UserServiceImpl(userDao);
+        boolean isValid = userService.login(username, password);
 
         if (isValid) {
            session.setAttribute("username", username);
