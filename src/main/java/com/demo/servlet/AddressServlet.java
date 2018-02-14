@@ -42,7 +42,6 @@ public class AddressServlet extends HttpServlet {
             request.setAttribute("pageNo", pageNo);
 
             // 根据method参数执行各种操作
-            //AddressBean addressBean = new AddressBean();
             AddressDao addressDao = new AddressDaoImpl();
             AddressService addressService = new AddressServiceImpl(addressDao);
             if (method.equals("list")) {// 列表操作
@@ -60,23 +59,15 @@ public class AddressServlet extends HttpServlet {
             } else if (method.equals("insert")) {// 插入操作
                 // 执行插入
                 Address record = new Address();
-                String name = request.getParameter("name");
-                String sex = request.getParameter("sex");
-                String mobile = request.getParameter("mobile");
-                String email = request.getParameter("email");
-                String qq = request.getParameter("qq");
-                String company = request.getParameter("company");
-                String address = request.getParameter("address");
-                String postcode = request.getParameter("postcode");
-
-                record.setAddress(address);
-                record.setCompany(company);
-                record.setEmail(email);
-                record.setMobile(mobile);
-                record.setQq(qq);
-                record.setSex(sex);
-                record.setPostcode(postcode);
-                record.setName(name);
+                record.setAddress(request.getParameter("address"));
+                record.setCompany(request.getParameter("company"));
+                record.setEmail(request.getParameter("email"));
+                record.setMobile(request.getParameter("mobile"));
+                record.setQq(request.getParameter("qq"));
+                record.setSex(request.getParameter("sex"));
+                record.setPostcode(request.getParameter("postcode"));
+                record.setName(request.getParameter("name"));
+                record.setUsername(username);
                 addressService.insert(record);
                 // 查询数据
                 list(request, addressService, username, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
@@ -94,30 +85,21 @@ public class AddressServlet extends HttpServlet {
                 request.setAttribute("company", address.getCompany());
                 request.setAttribute("address", address.getAddress());
                 request.setAttribute("postcode", address.getPostcode());
-                //addressBean.select(request, username);
                 topage = "/address_edit.jsp";// 跳到修改页
             } else if (method.equals("update")) {// 更新操作
                 // 更新数据
                 Address record = new Address();
-                String name = request.getParameter("name");
-                String sex = request.getParameter("sex");
-                String mobile = request.getParameter("mobile");
-                String email = request.getParameter("email");
-                String qq = request.getParameter("qq");
-                String company = request.getParameter("company");
-                String address = request.getParameter("address");
-                String postcode = request.getParameter("postcode");
-
-                record.setAddress(address);
-                record.setCompany(company);
-                record.setEmail(email);
-                record.setMobile(mobile);
-                record.setQq(qq);
-                record.setSex(sex);
-                record.setPostcode(postcode);
-                record.setName(name);
+                record.setId(Integer.parseInt(request.getParameter("id")));
+                record.setUsername(username);
+                record.setAddress(request.getParameter("address"));
+                record.setCompany(request.getParameter("company"));
+                record.setEmail(request.getParameter("email"));
+                record.setMobile(request.getParameter("mobile"));
+                record.setQq(request.getParameter("qq"));
+                record.setSex(request.getParameter("sex"));
+                record.setPostcode(request.getParameter("postcode"));
+                record.setName(request.getParameter("name"));
                 addressService.update(record);
-                //addressBean.update(request, username);
                 // 查询数据
                 list(request, addressService, username, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
                 topage = "/address.jsp";// 跳到列表页
@@ -131,7 +113,6 @@ public class AddressServlet extends HttpServlet {
     }
 
     private void list(HttpServletRequest request, AddressService addressService, String username, int pageSize, int pageNo) {
-
         Page page = addressService.list(username, pageSize, pageNo);
         request.setAttribute("rowCount", page.getRowCount());
         request.setAttribute("pageCount", page.getPageCount());
