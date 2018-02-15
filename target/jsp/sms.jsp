@@ -1,7 +1,6 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
-<%@page import="java.util.Hashtable"%>
-<%@page import="java.util.Iterator"%>
+<%@ page import="com.demo.hibernate.beans.Sms" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -67,22 +66,24 @@
 			</TR>
 
 			<%
-				List<Hashtable<String, String>> list = (List<Hashtable<String, String>>) request
-						.getAttribute("list");
-				Iterator<Hashtable<String, String>> it = list.iterator();
-				while (it.hasNext()) {
-					Hashtable<String, String> hash = it.next();
-					String id = hash.get("id");
+				List<Sms> list = (List<Sms>) request.getAttribute("list");
+				for (Sms sms : list) {
+					String id = sms.getId().toString();
 			%>
 			<TR>
-				<TD><%=hash.get("sender")%></TD>
-				<TD><%=hash.get("message")%></TD>
-				<TD><%=hash.get("username")%></TD>
-				<TD><%=hash.get("isRead")%></TD>
+				<TD><%=sms.getSender()%>
+				</TD>
+				<TD><%=sms.getMessage()%>
+				</TD>
+				<TD><%=sms.getUsername()%>
+				</TD>
+				<TD><%=sms.getIsRead()%>
+				</TD>
 				<TD><a
-					href='sms.do?method=read&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>设置已读</a>
-				<a
-					href="sms.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>">删除</a></TD>
+						href='sms.do?method=read&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>设置已读</a>
+					<a
+							href="sms.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>">删除</a>
+				</TD>
 			</TR>
 			<%
 				}

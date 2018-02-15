@@ -86,8 +86,7 @@ public class MeetingServlet extends HttpServlet {
                 topage = "/meeting_edit.jsp";// 跳到修改页
             } else if (method.equals("update")) {// 更新操作
                 // 更新数据
-                Meeting record = new Meeting();
-                record.setId(Integer.parseInt(request.getParameter("id")));
+                Meeting record = meetingService.select(Integer.parseInt(request.getParameter("id")));
                 record.setStarttime(request.getParameter("starttime"));
                 record.setTitle(request.getParameter("title"));
                 record.setEndtime(request.getParameter("endtime"));

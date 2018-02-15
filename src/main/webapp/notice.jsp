@@ -1,7 +1,5 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
-<%@page import="java.util.Hashtable"%>
-<%@page import="java.util.Iterator"%>
 <%@ page import="com.demo.hibernate.beans.Notice" %>
 <%
 	String path = request.getContextPath();

@@ -88,9 +88,7 @@ public class AddressServlet extends HttpServlet {
                 topage = "/address_edit.jsp";// 跳到修改页
             } else if (method.equals("update")) {// 更新操作
                 // 更新数据
-                Address record = new Address();
-                record.setId(Integer.parseInt(request.getParameter("id")));
-                record.setUsername(username);
+                Address record = addressService.select(Integer.parseInt(request.getParameter("id")));
                 record.setAddress(request.getParameter("address"));
                 record.setCompany(request.getParameter("company"));
                 record.setEmail(request.getParameter("email"));

@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -8,8 +8,7 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@page import="java.util.List"%>
-<%@page import="java.util.Hashtable"%>
-<%@page import="java.util.Iterator"%>
+<%@ page import="com.demo.hibernate.beans.Schedule" %>
 <html>
 <head>
 <base href="<%=basePath%>">
@@ -67,22 +66,24 @@
 			</TR>
 
 			<%
-				List<Hashtable<String, String>> list = (List<Hashtable<String, String>>) request
-						.getAttribute("list");
-				Iterator<Hashtable<String, String>> it = list.iterator();
-				while (it.hasNext()) {
-					Hashtable<String, String> hash = it.next();
-					String id = hash.get("id");
+				List<Schedule> list = (List<Schedule>) request.getAttribute("list");
+				for (Schedule schedule : list) {
+					String id = schedule.getId().toString();
 			%>
 			<TR>
-				<TD><%=hash.get("year")%></TD>
-				<TD><%=hash.get("month")%></TD>
-				<TD><%=hash.get("day")%></TD>
-				<TD><%=hash.get("plan")%></TD>
+				<TD><%=schedule.getYear()%>
+				</TD>
+				<TD><%=schedule.getMonth()%>
+				</TD>
+				<TD><%=schedule.getDay()%>
+				</TD>
+				<TD><%=schedule.getPlan()%>
+				</TD>
 				<TD><a
-					href='schedule.do?method=edit&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>修改</a>
-				<a
-					href="schedule.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>">删除</a></TD>
+						href='schedule.do?method=edit&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>修改</a>
+					<a
+							href="schedule.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>">删除</a>
+				</TD>
 			</TR>
 			<%
 				}

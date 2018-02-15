@@ -1,6 +1,11 @@
 package com.demo.servlet;
 
-import com.demo.javabean.ScheduleBean;
+import com.demo.hibernate.beans.Schedule;
+import com.demo.hibernate.dao.ScheduleDao;
+import com.demo.hibernate.dao.ScheduleDaoImpl;
+import com.demo.hibernate.service.ScheduleService;
+import com.demo.hibernate.service.ScheduleServiceImpl;
+import com.demo.hibernate.util.Page;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,34 +41,56 @@ public class ScheduleServlet extends HttpServlet {
             request.setAttribute("pageNo", pageNo);
 
             // 根据method参数执行各种操作
-            ScheduleBean scheduleBean = new ScheduleBean();
+            //ScheduleBean scheduleBean = new ScheduleBean();
+            ScheduleDao scheduleDao = new ScheduleDaoImpl();
+            ScheduleService scheduleService = new ScheduleServiceImpl(scheduleDao);
+
             if (method.equals("list")) {// 列表操作
                 // 查询数据
-                scheduleBean.list(request, username, pageSize, pageNo);
+                list(request, scheduleService, username, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
                 topage = "/schedule.jsp";// 跳到列表页
             } else if (method.equals("delete")) {// 删除操作
                 // 执行删除
-                scheduleBean.delete(request, username);
+                scheduleService.delete(Integer.parseInt(request.getParameter("id")));
+                //scheduleBean.delete(request, username);
                 // 查询数据
-                scheduleBean.list(request, username, pageSize, pageNo);
+                list(request, scheduleService, username, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
                 topage = "/schedule.jsp";// 跳到列表页
             } else if (method.equals("add")) {// 新增操作
                 topage = "/schedule_add.jsp";// 跳到新增页
             } else if (method.equals("insert")) {// 插入操作
                 // 执行插入
-                scheduleBean.insert(request, username);
+                Schedule record = new Schedule();
+                record.setUsername(username);
+                record.setYear(Integer.parseInt(request.getParameter("year")));
+                record.setMonth(Integer.parseInt(request.getParameter("month")));
+                record.setDay(Integer.parseInt(request.getParameter("day")));
+                record.setPlan(request.getParameter("plan"));
+                scheduleService.insert(record);
+                //scheduleBean.insert(request, username);
                 // 查询数据
-                scheduleBean.list(request, username, pageSize, pageNo);
+                list(request, scheduleService, username, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
                 topage = "/schedule.jsp";// 跳到列表页
             } else if (method.equals("edit")) {// 修改操作
                 // 执行查询
-                scheduleBean.select(request, username);
+                Schedule schedule = scheduleService.select(Integer.parseInt(request.getParameter("id")));
+                request.setAttribute("id", schedule.getId());
+                request.setAttribute("username", schedule.getUsername());
+                request.setAttribute("year", schedule.getYear());
+                request.setAttribute("month", schedule.getMonth());
+                request.setAttribute("day", schedule.getDay());
+                request.setAttribute("plan", schedule.getPlan());
                 topage = "/schedule_edit.jsp";// 跳到修改页
             } else if (method.equals("update")) {// 更新操作
                 // 更新数据
-                scheduleBean.update(request, username);
+                Schedule record = scheduleService.select(Integer.parseInt(request.getParameter("id")));
+                record.setYear(Integer.parseInt(request.getParameter("year")));
+                record.setMonth(Integer.parseInt(request.getParameter("month")));
+                record.setDay(Integer.parseInt(request.getParameter("day")));
+                record.setPlan(request.getParameter("plan"));
+                scheduleService.update(record);
                 // 查询数据
-                scheduleBean.list(request, username, pageSize, pageNo);
+                list(request, scheduleService, username, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
                 topage = "/schedule.jsp";// 跳到列表页
             }
         }
@@ -72,6 +99,17 @@ public class ScheduleServlet extends HttpServlet {
         RequestDispatcher rd = this.getServletContext().getRequestDispatcher(
                 topage);
         rd.forward(request, response);
+    }
+
+    private void list(HttpServletRequest request, ScheduleService scheduleService, String username, int pageSize, int pageNo) {
+        Page page = scheduleService.list(username, pageSize, pageNo);
+        request.setAttribute("rowCount", page.getRowCount());
+        request.setAttribute("pageCount", page.getPageCount());
+        request.setAttribute("pageFirstNo", page.getFirstPageNo());
+        request.setAttribute("pageLastNo", page.getLastPageNo());
+        request.setAttribute("pagePreNo", page.getPrePageNo());
+        request.setAttribute("pageNextNo", page.getNextPageNo());
+        request.setAttribute("list", page.getResultList());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

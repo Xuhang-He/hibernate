@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -7,7 +7,6 @@
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@page import="java.util.List"%>
-<%@page import="java.util.Iterator"%>
 <%@ page import="com.demo.hibernate.beans.Address" %>
 <html>
 <head>
@@ -72,24 +71,31 @@
 
 			<%
 				List<Address> list = (List<Address>) request.getAttribute("list");
-				Iterator<Address> it = list.iterator();
-				while (it.hasNext()) {
-					Address address = it.next();
+				for (Address address : list) {
 					String id = address.getId().toString();
 			%>
 			<TR>
-				<TD><%=address.getName()%></TD>
-				<TD><%=address.getSex()%></TD>
-				<TD><%=address.getMobile()%></TD>
-				<TD><%=address.getEmail()%></TD>
-				<TD><%=address.getQq()%></TD>
-				<TD><%=address.getCompany()%></TD>
-				<TD><%=address.getAddress()%></TD>
-				<TD><%=address.getPostcode()%></TD>
+				<TD><%=address.getName()%>
+				</TD>
+				<TD><%=address.getSex()%>
+				</TD>
+				<TD><%=address.getMobile()%>
+				</TD>
+				<TD><%=address.getEmail()%>
+				</TD>
+				<TD><%=address.getQq()%>
+				</TD>
+				<TD><%=address.getCompany()%>
+				</TD>
+				<TD><%=address.getAddress()%>
+				</TD>
+				<TD><%=address.getPostcode()%>
+				</TD>
 				<TD><a
-					href='address.do?method=edit&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>修改</a>
-				<a
-					href='address.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>删除</a></TD>
+						href='address.do?method=edit&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>修改</a>
+					<a
+							href='address.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>删除</a>
+				</TD>
 			</TR>
 			<%
 				}

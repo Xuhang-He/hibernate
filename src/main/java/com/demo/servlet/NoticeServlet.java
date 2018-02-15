@@ -86,15 +86,10 @@ public class NoticeServlet extends HttpServlet {
             } else if (method.equals("update")) {// 更新操作
                 // 更新数据
                 //noticeBean.update(request, username);
-                Notice record = new Notice();
-                SimpleDateFormat format = new SimpleDateFormat(
-                        "yyyy-MM-dd HH:mm:ss");
-                String sendtime = format.format(new Date());
-                record.setId(Integer.parseInt(request.getParameter("id")));
+                Notice record = noticeService.select(Integer.parseInt(request.getParameter("id")));
                 record.setTitle(request.getParameter("id"));
                 record.setContent(request.getParameter("content"));
                 record.setSender(username);
-                record.setSendtime(sendtime);
                 noticeService.update(record);
                 // 查询数据
                 list(request, noticeService, Integer.parseInt(pageSize), Integer.parseInt(pageNo));

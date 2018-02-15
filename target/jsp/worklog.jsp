@@ -1,7 +1,6 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
-<%@page import="java.util.Hashtable"%>
-<%@page import="java.util.Iterator"%>
+<%@ page import="com.demo.hibernate.beans.Worklog" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -69,24 +68,28 @@
 			</TR>
 
 			<%
-				List<Hashtable<String, String>> list = (List<Hashtable<String, String>>) request
-						.getAttribute("list");
-				Iterator<Hashtable<String, String>> it = list.iterator();
-				while (it.hasNext()) {
-					Hashtable<String, String> hash = it.next();
-					String id = hash.get("id");
+				List<Worklog> list = (List<Worklog>) request.getAttribute("list");
+				for (Worklog worklog : list) {
+					String id = worklog.getId().toString();
 			%>
 			<TR>
-				<TD><%=hash.get("year")%></TD>
-				<TD><%=hash.get("month")%></TD>
-				<TD><%=hash.get("day")%></TD>
-				<TD><%=hash.get("title")%></TD>
-				<TD><%=hash.get("description")%></TD>
-				<TD><%=hash.get("logtime")%></TD>
+				<TD><%=worklog.getYear()%>
+				</TD>
+				<TD><%=worklog.getMonth()%>
+				</TD>
+				<TD><%=worklog.getDay()%>
+				</TD>
+				<TD><%=worklog.getTitle()%>
+				</TD>
+				<TD><%=worklog.getDescription()%>
+				</TD>
+				<TD><%=worklog.getLogtime()%>
+				</TD>
 				<TD><a
-					href='worklog.do?method=edit&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>修改</a>
-				<a
-					href="worklog.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>">删除</a></TD>
+						href='worklog.do?method=edit&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>修改</a>
+					<a
+							href="worklog.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>">删除</a>
+				</TD>
 			</TR>
 			<%
 				}
