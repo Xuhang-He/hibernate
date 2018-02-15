@@ -20,7 +20,7 @@ public class AjaxServlet extends HttpServlet {
         response.setContentType("text/xml");
         response.setHeader("Cache-Control","no-cache");
         String username = request.getParameter("username");
-        
+
         UserDao userDao = new UserDaoImpl();
         UserService userService = new UserServiceImpl(userDao);
         boolean isExist = userService.isExist(username);

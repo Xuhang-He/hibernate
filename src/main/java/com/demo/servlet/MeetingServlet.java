@@ -1,6 +1,11 @@
 package com.demo.servlet;
 
-import com.demo.javabean.MeetingBean;
+import com.demo.hibernate.beans.Meeting;
+import com.demo.hibernate.dao.MeetingDao;
+import com.demo.hibernate.dao.MeetingDaoImpl;
+import com.demo.hibernate.service.MeetingService;
+import com.demo.hibernate.service.MeetingServiceImpl;
+import com.demo.hibernate.util.Page;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,34 +41,62 @@ public class MeetingServlet extends HttpServlet {
             request.setAttribute("pageNo", pageNo);
 
             // 根据method参数执行各种操作
-            MeetingBean meetingBean = new MeetingBean();
+            //MeetingBean meetingBean = new MeetingBean();
+            MeetingDao meetingDao = new MeetingDaoImpl();
+            MeetingService meetingService = new MeetingServiceImpl(meetingDao);
             if (method.equals("list")) {// 列表操作
                 // 查询数据
-                meetingBean.list(request, username, pageSize, pageNo);
+                list(request, meetingService, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
                 topage = "/meeting.jsp";// 跳到列表页
             } else if (method.equals("delete")) {// 删除操作
                 // 执行删除
-                meetingBean.delete(request, username);
+                //meetingBean.delete(request, username);
+                meetingService.delete(Integer.parseInt(request.getParameter("id")));
                 // 查询数据
-                meetingBean.list(request, username, pageSize, pageNo);
+                list(request, meetingService, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
                 topage = "/meeting.jsp";// 跳到列表页
             } else if (method.equals("add")) {// 新增操作
                 topage = "/meeting_add.jsp";// 跳到新增页
             } else if (method.equals("insert")) {// 插入操作
                 // 执行插入
-                meetingBean.insert(request, username);
+                Meeting record = new Meeting();
+                record.setSender(username);
+                record.setAddress(request.getParameter("address"));
+                record.setEndtime(request.getParameter("endtime"));
+                record.setContent(request.getParameter("content"));
+                record.setTitle(request.getParameter("title"));
+                record.setStarttime(request.getParameter("starttime"));
+
+                meetingService.insert(record);
                 // 查询数据
-                meetingBean.list(request, username, pageSize, pageNo);
+                list(request, meetingService, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
                 topage = "/meeting.jsp";// 跳到列表页
             } else if (method.equals("edit")) {// 修改操作
                 // 执行查询
-                meetingBean.select(request, username);
+                //meetingBean.select(request, username);
+                Meeting meeting = meetingService.select(Integer.parseInt(request.getParameter("id")));
+                request.setAttribute("id", meeting.getId());
+                request.setAttribute("sender", meeting.getSender());
+                request.setAttribute("starttime", meeting.getStarttime());
+                request.setAttribute("endtime", meeting.getEndtime());
+                request.setAttribute("address", meeting.getAddress());
+                request.setAttribute("title", meeting.getTitle());
+                request.setAttribute("content", meeting.getContent());
+
                 topage = "/meeting_edit.jsp";// 跳到修改页
             } else if (method.equals("update")) {// 更新操作
                 // 更新数据
-                meetingBean.update(request, username);
+                Meeting record = new Meeting();
+                record.setId(Integer.parseInt(request.getParameter("id")));
+                record.setStarttime(request.getParameter("starttime"));
+                record.setTitle(request.getParameter("title"));
+                record.setEndtime(request.getParameter("endtime"));
+                record.setContent(request.getParameter("content"));
+                record.setAddress(request.getParameter("address"));
+                record.setSender(username);
+                meetingService.update(record);
                 // 查询数据
-                meetingBean.list(request, username, pageSize, pageNo);
+                list(request, meetingService, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
                 topage = "/meeting.jsp";// 跳到列表页
             }
         }
@@ -72,6 +105,17 @@ public class MeetingServlet extends HttpServlet {
         RequestDispatcher rd = this.getServletContext().getRequestDispatcher(
                 topage);
         rd.forward(request, response);
+    }
+
+    private void list(HttpServletRequest request, MeetingService meetingService, int pageSize, int pageNo) {
+        Page page = meetingService.list(pageSize, pageNo);
+        request.setAttribute("rowCount", page.getRowCount());
+        request.setAttribute("pageCount", page.getPageCount());
+        request.setAttribute("pageFirstNo", page.getFirstPageNo());
+        request.setAttribute("pageLastNo", page.getLastPageNo());
+        request.setAttribute("pagePreNo", page.getPrePageNo());
+        request.setAttribute("pageNextNo", page.getNextPageNo());
+        request.setAttribute("list", page.getResultList());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

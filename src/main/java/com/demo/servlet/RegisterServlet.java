@@ -24,7 +24,6 @@ public class RegisterServlet extends HttpServlet{
         String password1 = req.getParameter("password1");
         String email = req.getParameter("email");
 
-        //UserBean userBean = new UserBean();
         UserDao userDao = new UserDaoImpl();
         UserService userService = new UserServiceImpl(userDao);
         boolean isExist = userService.isExist(username);

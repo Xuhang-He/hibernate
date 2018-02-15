@@ -2,6 +2,7 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.Hashtable"%>
 <%@page import="java.util.Iterator"%>
+<%@ page import="com.demo.hibernate.beans.Notice" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -68,22 +69,24 @@
 			</TR>
 
 			<%
-				List<Hashtable<String, String>> list = (List<Hashtable<String, String>>) request
-						.getAttribute("list");
-				Iterator<Hashtable<String, String>> it = list.iterator();
-				while (it.hasNext()) {
-					Hashtable<String, String> hash = it.next();
-					String id = hash.get("id");
+				List<Notice> list = (List<Notice>) request.getAttribute("list");
+				for (Notice notice : list) {
+					String id = notice.getId().toString();
 			%>
 			<TR>
-				<TD><%=hash.get("sender")%></TD>
-				<TD><%=hash.get("title")%></TD>
-				<TD><%=hash.get("content")%></TD>
-				<TD><%=hash.get("sendtime")%></TD>
+				<TD><%=notice.getSender()%>
+				</TD>
+				<TD><%=notice.getTitle()%>
+				</TD>
+				<TD><%=notice.getContent()%>
+				</TD>
+				<TD><%=notice.getSendtime()%>
+				</TD>
 				<TD><a
-					href='notice.do?method=edit&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>修改</a>
-				<a
-					href="notice.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>">删除</a></TD>
+						href='notice.do?method=edit&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>修改</a>
+					<a
+							href="notice.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>">删除</a>
+				</TD>
 			</TR>
 			<%
 				}

@@ -2,6 +2,7 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.Hashtable"%>
 <%@page import="java.util.Iterator"%>
+<%@ page import="com.demo.hibernate.beans.Meeting" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -69,24 +70,28 @@
 			</TR>
 
 			<%
-				List<Hashtable<String, String>> list = (List<Hashtable<String, String>>) request
-						.getAttribute("list");
-				Iterator<Hashtable<String, String>> it = list.iterator();
-				while (it.hasNext()) {
-					Hashtable<String, String> hash = it.next();
-					String id = hash.get("id");
+				List<Meeting> list = (List<Meeting>) request.getAttribute("list");
+				for (Meeting meeting : list) {
+					String id = meeting.getId().toString();
 			%>
 			<TR>
-				<TD><%=hash.get("sender")%></TD>
-				<TD><%=hash.get("starttime")%></TD>
-				<TD><%=hash.get("endtime")%></TD>
-				<TD><%=hash.get("address")%></TD>
-				<TD><%=hash.get("title")%></TD>
-				<TD><%=hash.get("content")%></TD>
+				<TD><%=meeting.getSender()%>
+				</TD>
+				<TD><%=meeting.getStarttime()%>
+				</TD>
+				<TD><%=meeting.getEndtime()%>
+				</TD>
+				<TD><%=meeting.getAddress()%>
+				</TD>
+				<TD><%=meeting.getTitle()%>
+				</TD>
+				<TD><%=meeting.getContent()%>
+				</TD>
 				<TD><a
-					href='meeting.do?method=edit&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>修改</a>
-				<a
-					href="meeting.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>">删除</a></TD>
+						href='meeting.do?method=edit&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>'>修改</a>
+					<a
+							href="meeting.do?method=delete&id=<%=id %>&pageSize=<%=pageSize%>&pageNo=<%=pageNo%>">删除</a>
+				</TD>
 			</TR>
 			<%
 				}
