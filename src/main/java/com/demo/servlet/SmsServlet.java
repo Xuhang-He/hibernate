@@ -43,7 +43,6 @@ public class SmsServlet extends HttpServlet {
             request.setAttribute("pageNo", pageNo);
 
             // 根据method参数执行各种操作
-            //SmsBean smsBean = new SmsBean();
             SmsDao smsDao = new SmsDaoImpl();
             SmsService smsService = new SmsServiceImpl(smsDao);
             if (method.equals("list")) {// 列表操作

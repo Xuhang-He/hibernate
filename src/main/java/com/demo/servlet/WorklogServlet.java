@@ -6,7 +6,6 @@ import com.demo.hibernate.dao.WorklogDaoImpl;
 import com.demo.hibernate.service.WorklogService;
 import com.demo.hibernate.service.WorklogServiceImpl;
 import com.demo.hibernate.util.Page;
-import com.demo.javabean.WorklogBean;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,7 +43,6 @@ public class WorklogServlet extends HttpServlet {
             request.setAttribute("pageNo", pageNo);
 
             // 根据method参数执行各种操作
-            //WorklogBean worklogBean = new WorklogBean();
             WorklogDao worklogDao = new WorklogDaoImpl();
             WorklogService worklogService = new WorklogServiceImpl(worklogDao);
             if (method.equals("list")) {// 列表操作

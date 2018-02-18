@@ -41,7 +41,6 @@ public class MeetingServlet extends HttpServlet {
             request.setAttribute("pageNo", pageNo);
 
             // 根据method参数执行各种操作
-            //MeetingBean meetingBean = new MeetingBean();
             MeetingDao meetingDao = new MeetingDaoImpl();
             MeetingService meetingService = new MeetingServiceImpl(meetingDao);
             if (method.equals("list")) {// 列表操作
@@ -50,7 +49,6 @@ public class MeetingServlet extends HttpServlet {
                 topage = "/meeting.jsp";// 跳到列表页
             } else if (method.equals("delete")) {// 删除操作
                 // 执行删除
-                //meetingBean.delete(request, username);
                 meetingService.delete(Integer.parseInt(request.getParameter("id")));
                 // 查询数据
                 list(request, meetingService, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
@@ -73,7 +71,6 @@ public class MeetingServlet extends HttpServlet {
                 topage = "/meeting.jsp";// 跳到列表页
             } else if (method.equals("edit")) {// 修改操作
                 // 执行查询
-                //meetingBean.select(request, username);
                 Meeting meeting = meetingService.select(Integer.parseInt(request.getParameter("id")));
                 request.setAttribute("id", meeting.getId());
                 request.setAttribute("sender", meeting.getSender());

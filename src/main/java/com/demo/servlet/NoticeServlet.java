@@ -43,7 +43,6 @@ public class NoticeServlet extends HttpServlet {
             request.setAttribute("pageNo", pageNo);
 
             // 根据method参数执行各种操作
-            //NoticeBean noticeBean = new NoticeBean();
             NoticeDao noticeDao = new NoticeDaoImpl();
             NoticeService noticeService = new NoticeServiceImpl(noticeDao);
             if (method.equals("list")) {// 列表操作
@@ -52,7 +51,6 @@ public class NoticeServlet extends HttpServlet {
                 topage = "/notice.jsp";// 跳到列表页
             } else if (method.equals("delete")) {// 删除操作
                 // 执行删除
-                //noticeBean.delete(request, username);
                 noticeService.delete(Integer.parseInt(request.getParameter("id")));
                 // 查询数据
                 list(request, noticeService, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
@@ -75,7 +73,6 @@ public class NoticeServlet extends HttpServlet {
                 topage = "/notice.jsp";// 跳到列表页
             } else if (method.equals("edit")) {// 修改操作
                 // 执行查询
-                //noticeBean.select(request, username);
                 Notice notice = noticeService.select(Integer.parseInt(request.getParameter("id")));
                 request.setAttribute("id", notice.getId());
                 request.setAttribute("sender", notice.getSender());
@@ -85,7 +82,6 @@ public class NoticeServlet extends HttpServlet {
                 topage = "/notice_edit.jsp";// 跳到修改页
             } else if (method.equals("update")) {// 更新操作
                 // 更新数据
-                //noticeBean.update(request, username);
                 Notice record = noticeService.select(Integer.parseInt(request.getParameter("id")));
                 record.setTitle(request.getParameter("id"));
                 record.setContent(request.getParameter("content"));

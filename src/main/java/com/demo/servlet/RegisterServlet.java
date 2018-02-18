@@ -5,7 +5,6 @@ import com.demo.hibernate.dao.UserDao;
 import com.demo.hibernate.dao.UserDaoImpl;
 import com.demo.hibernate.service.UserService;
 import com.demo.hibernate.service.UserServiceImpl;
-import com.demo.javabean.UserBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

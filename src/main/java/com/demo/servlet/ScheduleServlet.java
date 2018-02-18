@@ -41,7 +41,6 @@ public class ScheduleServlet extends HttpServlet {
             request.setAttribute("pageNo", pageNo);
 
             // 根据method参数执行各种操作
-            //ScheduleBean scheduleBean = new ScheduleBean();
             ScheduleDao scheduleDao = new ScheduleDaoImpl();
             ScheduleService scheduleService = new ScheduleServiceImpl(scheduleDao);
 
@@ -52,7 +51,6 @@ public class ScheduleServlet extends HttpServlet {
             } else if (method.equals("delete")) {// 删除操作
                 // 执行删除
                 scheduleService.delete(Integer.parseInt(request.getParameter("id")));
-                //scheduleBean.delete(request, username);
                 // 查询数据
                 list(request, scheduleService, username, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
                 topage = "/schedule.jsp";// 跳到列表页
@@ -67,7 +65,6 @@ public class ScheduleServlet extends HttpServlet {
                 record.setDay(Integer.parseInt(request.getParameter("day")));
                 record.setPlan(request.getParameter("plan"));
                 scheduleService.insert(record);
-                //scheduleBean.insert(request, username);
                 // 查询数据
                 list(request, scheduleService, username, Integer.parseInt(pageSize), Integer.parseInt(pageNo));
                 topage = "/schedule.jsp";// 跳到列表页
